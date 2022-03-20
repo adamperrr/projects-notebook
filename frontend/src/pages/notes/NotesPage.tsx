@@ -1,7 +1,6 @@
 import React from "react";
 import {
   AppBar,
-  Button,
   CssBaseline,
   Toolbar,
   Typography,
@@ -15,13 +14,11 @@ import {
   TableHead,
   TableRow,
   TableBody,
-  TableFooter,
 } from "@mui/material";
 import monthNames from "../../constants/monthNames";
-import { getMonthDates } from "../../utils/getMonthDates";
-import { formatDate } from "../../utils/formatDate";
-
-type CalendarDay = { date: string; description: string; isSaved: boolean };
+import weekdays from "../../constants/weekdays";
+import { getMonthDates, getIsoDateString } from "../../utils/dateHelpers";
+import CalendarDay from "./CalendarDay.type";
 
 const date: Date = new Date();
 const currentYear = date.getFullYear();
@@ -31,7 +28,16 @@ const pageTitle = `${monthNames[currentMonth]} ${currentYear}`;
 const calendarRows: CalendarDay[] = getMonthDates(
   currentYear,
   currentMonth
-).map((date: string) => ({ date, description: "Lorem ipsum", isSaved: false }));
+).map((date: Date) => {
+  console.log(date.toISOString(), date.toString());
+
+  return {
+    date,
+    projectName: "Project",
+    description: "Lorem ipsum",
+    isSaved: false,
+  };
+});
 
 const NotesPage = () => {
   return (
@@ -74,11 +80,23 @@ const NotesPage = () => {
             >
               <TableHead>
                 <TableRow>
-                  <TableCell style={{ width: 100 }} align="left">
+                  <TableCell style={{ width: 100 }} align="left" padding="none">
                     Date
                   </TableCell>
-                  <TableCell align="left">Description</TableCell>
-                  <TableCell style={{ width: 100 }} align="right">
+                  <TableCell style={{ width: 100 }} align="left" padding="none">
+                    Weekday
+                  </TableCell>
+                  <TableCell style={{ width: 100 }} align="left" padding="none">
+                    Project
+                  </TableCell>
+                  <TableCell align="left" padding="none">
+                    Description
+                  </TableCell>
+                  <TableCell
+                    style={{ width: 100 }}
+                    align="right"
+                    padding="none"
+                  >
                     Action
                   </TableCell>
                 </TableRow>
@@ -87,23 +105,54 @@ const NotesPage = () => {
                 {calendarRows.map((row) => (
                   <TableRow
                     hover
-                    key={row.date}
+                    key={row.date.toString()}
                     sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
-                    // style={
-                    //   new Date().format("Y-m-d") === row.date
-                    //     ? {
-                    //         backgroundColor: "red",
-                    //       }
-                    //     : {
-                    //         backgroundColor: "inherit",
-                    //       }
-                    // }
+                    style={
+                      row.date.toDateString() === new Date().toDateString()
+                        ? {
+                            backgroundColor: "#bdbdbd",
+                          }
+                        : row.date.getDay() === 0 || row.date.getDay() === 6
+                        ? {
+                            backgroundColor: "#e0e0e0",
+                          }
+                        : {
+                            backgroundColor: "inherit",
+                          }
+                    }
                   >
-                    <TableCell component="th" scope="row">
-                      <b>{row.date}</b>
+                    <TableCell
+                      component="th"
+                      scope="row"
+                      align="left"
+                      padding="none"
+                    >
+                      <b>{getIsoDateString(row.date)}</b>
                     </TableCell>
-                    <TableCell>{row.description}</TableCell>
-                    <TableCell style={{ width: 100 }} align="right">
+                    <TableCell
+                      style={{ width: 100 }}
+                      align="left"
+                      padding="none"
+                    >
+                      {weekdays[row.date.getDay()]}
+                    </TableCell>
+                    <TableCell
+                      style={{ width: 100 }}
+                      align="left"
+                      padding="none"
+                    >
+                      {row.date.getDay() === 0 || row.date.getDay() === 6
+                        ? "Weekend"
+                        : row.projectName}
+                    </TableCell>
+                    <TableCell align="left" padding="none">
+                      {row.description}
+                    </TableCell>
+                    <TableCell
+                      style={{ width: 100 }}
+                      align="right"
+                      padding="none"
+                    >
                       {row.isSaved ? (
                         <Link href="#" underline="none">
                           Create
