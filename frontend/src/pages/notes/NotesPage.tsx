@@ -1,4 +1,5 @@
 import React from "react";
+import { useParams } from "react-router-dom";
 import {
   AppBar,
   CssBaseline,
@@ -20,26 +21,26 @@ import weekdays from "../../constants/weekdays";
 import { getMonthDates, getIsoDateString } from "../../utils/dateHelpers";
 import CalendarDay from "./CalendarDay.type";
 
-const date: Date = new Date();
-const currentYear = date.getFullYear();
-const currentMonth = date.getMonth();
+const NotesPage = () => {
+  const params = useParams();
+  const date: Date = new Date();
+  const currentYear: number =
+    params.year !== undefined ? Number(params.year) : date.getFullYear();
+  const currentMonth: number =
+    params.month !== undefined ? Number(params.month) : date.getMonth() + 1;
+  console.log("currentMonth:", date.getMonth());
 
-const pageTitle = `${monthNames[currentMonth]} ${currentYear}`;
-const calendarRows: CalendarDay[] = getMonthDates(
-  currentYear,
-  currentMonth
-).map((date: Date) => {
-  console.log(date.toISOString(), date.toString());
-
-  return {
+  const pageTitle = `${monthNames[currentMonth - 1]} ${currentYear}`;
+  const calendarRows: CalendarDay[] = getMonthDates(
+    currentYear,
+    currentMonth
+  ).map((date: Date) => ({
     date,
     projectName: "Project",
     description: "Lorem ipsum",
     isSaved: false,
-  };
-});
+  }));
 
-const NotesPage = () => {
   return (
     <React.Fragment>
       <GlobalStyles
@@ -80,22 +81,34 @@ const NotesPage = () => {
             >
               <TableHead>
                 <TableRow>
-                  <TableCell style={{ width: 100 }} align="left" padding="none">
+                  <TableCell
+                    style={{ width: 100 }}
+                    align="left"
+                    padding="normal"
+                  >
                     Date
                   </TableCell>
-                  <TableCell style={{ width: 100 }} align="left" padding="none">
+                  <TableCell
+                    style={{ width: 100 }}
+                    align="left"
+                    padding="normal"
+                  >
                     Weekday
                   </TableCell>
-                  <TableCell style={{ width: 100 }} align="left" padding="none">
+                  <TableCell
+                    style={{ width: 100 }}
+                    align="left"
+                    padding="normal"
+                  >
                     Project
                   </TableCell>
-                  <TableCell align="left" padding="none">
+                  <TableCell align="left" padding="normal">
                     Description
                   </TableCell>
                   <TableCell
                     style={{ width: 100 }}
                     align="right"
-                    padding="none"
+                    padding="normal"
                   >
                     Action
                   </TableCell>
@@ -125,33 +138,33 @@ const NotesPage = () => {
                       component="th"
                       scope="row"
                       align="left"
-                      padding="none"
+                      padding="normal"
                     >
                       <b>{getIsoDateString(row.date)}</b>
                     </TableCell>
                     <TableCell
                       style={{ width: 100 }}
                       align="left"
-                      padding="none"
+                      padding="normal"
                     >
                       {weekdays[row.date.getDay()]}
                     </TableCell>
                     <TableCell
                       style={{ width: 100 }}
                       align="left"
-                      padding="none"
+                      padding="normal"
                     >
                       {row.date.getDay() === 0 || row.date.getDay() === 6
                         ? "Weekend"
                         : row.projectName}
                     </TableCell>
-                    <TableCell align="left" padding="none">
+                    <TableCell align="left" padding="normal">
                       {row.description}
                     </TableCell>
                     <TableCell
                       style={{ width: 100 }}
                       align="right"
-                      padding="none"
+                      padding="normal"
                     >
                       {row.isSaved ? (
                         <Link href="#" underline="none">
