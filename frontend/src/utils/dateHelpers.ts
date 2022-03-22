@@ -21,20 +21,27 @@ export const getIsoDateString = (date: Date): string => {
   const day = date.getDate().toString().padStart(2, "0");
 
   return `${year}-${month}-${day}`;
-  // return date.toString();
 };
-
-export const isPositiveInt = (num: any) => num > 0 && num % parseInt(num) === 0;
 
 export const parseYearAndMonth = (
   year: string,
   month: string,
   date: Date
 ): [number, number, Date] => {
-  const currentPageYear: number =
-    isPositiveInt(year) && isPositiveInt(month) ? +year : +date.getFullYear();
-  const currentPageMonth: number =
-    isPositiveInt(year) && isPositiveInt(month) ? +month : +date.getMonth() + 1;
+  const isPositiveInt = (num: any) => num > 0 && num % parseInt(num) === 0;
+
+  const areYearAndMonthOk =
+    isPositiveInt(year) &&
+    isPositiveInt(month) &&
+    Number(month) >= 1 &&
+    Number(month) <= 12;
+
+  const currentPageYear: number = areYearAndMonthOk
+    ? +year
+    : +date.getFullYear();
+  const currentPageMonth: number = areYearAndMonthOk
+    ? +month
+    : +date.getMonth() + 1;
   const currentPageDate: Date = new Date(
     currentPageYear,
     currentPageMonth - 1,
