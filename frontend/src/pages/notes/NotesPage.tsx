@@ -1,5 +1,5 @@
 import React from "react";
-import { useParams, Link } from "react-router-dom";
+import { useParams, Link, useNavigate } from "react-router-dom";
 import {
   AppBar,
   CssBaseline,
@@ -32,7 +32,7 @@ const NotesPage = () => {
   const date: Date = new Date();
 
   const params = useParams();
-  const [pageYear, pageMonth, pageDate] = parseYearAndMonth(
+  const [areYearAndMonthOk, pageYear, pageMonth, pageDate] = parseYearAndMonth(
     params?.year || "",
     params?.month || "",
     date
@@ -50,6 +50,13 @@ const NotesPage = () => {
 
   const [prevPageYear, prevPageMonth] = getPrevPageYearAndMonth(pageDate);
   const [nextPageYear, nextPageMonth] = getNextPageYearAndMonth(pageDate);
+
+  const navigate = useNavigate();
+  React.useEffect(() => {
+    if (!areYearAndMonthOk) {
+      navigate("/");
+    }
+  }, [areYearAndMonthOk]);
 
   return (
     <React.Fragment>
