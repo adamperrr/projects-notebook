@@ -1,5 +1,5 @@
 import React from "react";
-import { useParams } from "react-router-dom";
+import { useParams, Link } from "react-router-dom";
 import {
   AppBar,
   CssBaseline,
@@ -8,43 +8,48 @@ import {
   GlobalStyles,
   Box,
   Container,
-  Link,
   Table,
   TableCell,
   TableContainer,
   TableHead,
   TableRow,
   TableBody,
+  Grid,
+  Button,
 } from "@mui/material";
 import monthNames from "../../constants/monthNames";
 import weekdays from "../../constants/weekdays";
 import {
   getMonthDates,
   getIsoDateString,
-  getParseMonthAndYear,
+  parseYearAndMonth,
+  getPrevPageYearAndMonth,
+  getNextPageYearAndMonth,
 } from "../../utils/dateHelpers";
 import CalendarDay from "./CalendarDay.type";
 
 const NotesPage = () => {
-  const params = useParams();
-
   const date: Date = new Date();
-  const [currentYear, currentMonth] = getParseMonthAndYear(
-    params.year,
-    params.month,
+
+  const params = useParams();
+  const [pageYear, pageMonth, pageDate] = parseYearAndMonth(
+    params?.year || "",
+    params?.month || "",
     date
   );
 
-  const pageTitle = `${monthNames[currentMonth - 1]} ${currentYear}`;
-  const calendarRows: CalendarDay[] = getMonthDates(
-    currentYear,
-    currentMonth
-  ).map((date: Date) => ({
-    date,
-    projectName: "Project",
-    description: "Lorem ipsum",
-    isSaved: false,
-  }));
+  const pageTitle = `${monthNames[pageMonth - 1]} ${pageYear}`;
+  const calendarRows: CalendarDay[] = getMonthDates(pageYear, pageMonth).map(
+    (date: Date) => ({
+      date,
+      projectName: "Project",
+      description: "Lorem ipsum",
+      isSaved: false,
+    })
+  );
+
+  const [prevPageYear, prevPageMonth] = getPrevPageYearAndMonth(pageDate);
+  const [nextPageYear, nextPageMonth] = getNextPageYearAndMonth(pageDate);
 
   return (
     <React.Fragment>
@@ -171,26 +176,54 @@ const NotesPage = () => {
                       align="right"
                       padding="normal"
                     >
-                      {row.isSaved ? (
-                        <Link href="#" underline="none">
-                          Create
-                        </Link>
+                      {/* {row.isSaved ? (
+                        <Link href="#" underline="none"> */}
+                      Create
+                      {/* </Link>
                       ) : (
                         <Link href="#" underline="none">
                           Edit
                         </Link>
-                      )}
+                      )} */}
                     </TableCell>
                   </TableRow>
                 ))}
               </TableBody>
-              {/* <TableFooter>
-                <TableRow>Hello</TableRow>
-              </TableFooter> */}
             </Table>
           </TableContainer>
         </Container>
       </Box>
+
+      <Container maxWidth="xl" component="main">
+        <Grid
+          container
+          direction="row"
+          justifyContent="center"
+          alignItems="center"
+        >
+          <Grid item xs={4}>
+            <Button
+              component={Link}
+              to={`/${prevPageYear}/${prevPageMonth}`}
+              variant="outlined"
+            >
+              &lt; Previous month
+            </Button>
+          </Grid>
+          <Grid item xs={4} textAlign="center">
+            <Button variant="contained">Generate report</Button>
+          </Grid>
+          <Grid item xs={4} textAlign="right">
+            <Button
+              component={Link}
+              to={`/${nextPageYear}/${nextPageMonth}`}
+              variant="outlined"
+            >
+              Next month &gt;
+            </Button>
+          </Grid>
+        </Grid>
+      </Container>
 
       <Box sx={{ m: 5 }}>
         <Typography

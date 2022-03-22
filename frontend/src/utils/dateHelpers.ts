@@ -26,15 +26,32 @@ export const getIsoDateString = (date: Date): string => {
 
 export const isPositiveInt = (num: any) => num > 0 && num % parseInt(num) === 0;
 
-export const getParseMonthAndYear = (
-  year: any,
-  month: any,
+export const parseYearAndMonth = (
+  year: string,
+  month: string,
   date: Date
-): [number, number] => {
-  let currentYear: number =
+): [number, number, Date] => {
+  const currentPageYear: number =
     isPositiveInt(year) && isPositiveInt(month) ? +year : +date.getFullYear();
-  let currentMonth: number =
+  const currentPageMonth: number =
     isPositiveInt(year) && isPositiveInt(month) ? +month : +date.getMonth() + 1;
+  const currentPageDate: Date = new Date(
+    currentPageYear,
+    currentPageMonth - 1,
+    1
+  );
 
-  return [currentYear, currentMonth];
+  return [currentPageYear, currentPageMonth, currentPageDate];
+};
+
+export const getPrevPageYearAndMonth = (date: Date): [number, number] => {
+  const prevMonthDate = new Date(date.getFullYear(), date.getMonth() - 1, 1);
+
+  return [prevMonthDate.getFullYear(), prevMonthDate.getMonth() + 1];
+};
+
+export const getNextPageYearAndMonth = (date: Date): [number, number] => {
+  const nextMonthDate = new Date(date.getFullYear(), date.getMonth() + 1, 1);
+
+  return [nextMonthDate.getFullYear(), nextMonthDate.getMonth() + 1];
 };
