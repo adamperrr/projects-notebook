@@ -18,17 +18,22 @@ import {
 } from "@mui/material";
 import monthNames from "../../constants/monthNames";
 import weekdays from "../../constants/weekdays";
-import { getMonthDates, getIsoDateString } from "../../utils/dateHelpers";
+import {
+  getMonthDates,
+  getIsoDateString,
+  getParseMonthAndYear,
+} from "../../utils/dateHelpers";
 import CalendarDay from "./CalendarDay.type";
 
 const NotesPage = () => {
   const params = useParams();
+
   const date: Date = new Date();
-  const currentYear: number =
-    params.year !== undefined ? Number(params.year) : date.getFullYear();
-  const currentMonth: number =
-    params.month !== undefined ? Number(params.month) : date.getMonth() + 1;
-  console.log("currentMonth:", date.getMonth());
+  const [currentYear, currentMonth] = getParseMonthAndYear(
+    params.year,
+    params.month,
+    date
+  );
 
   const pageTitle = `${monthNames[currentMonth - 1]} ${currentYear}`;
   const calendarRows: CalendarDay[] = getMonthDates(
