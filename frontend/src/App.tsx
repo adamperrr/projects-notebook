@@ -6,7 +6,7 @@ function App() {
   return (
     <Routes>
       <Route path="/:year/:month" element={<NotesPage />} />
-      <Route path="/" element={<NotesPage />} />
+      <Route path="*" element={<NotesPage />} />
     </Routes>
   );
 }
