@@ -19,32 +19,31 @@ export class CalendarDayController {
   constructor(private readonly calendarDayService: CalendarDayService) {}
 
   @Post()
-  async createMonthDay(
+  async createDay(
     @Body() createCalendarDayDto: CreateCalendarDayDto
   ): Promise<CalendarDay> {
-    return await this.calendarDayService.createMonthDay(createCalendarDayDto);
+    return await this.calendarDayService.createDay(createCalendarDayDto);
   }
 
   @Get(":year/:month")
-  async findAllMonthDays(
-    @Headers("owner") owner: string,
+  async getMonthDays(
     @Param("year") year: number,
     @Param("month") month: number
   ): Promise<CalendarDay[]> {
-    return await this.calendarDayService.findAllMonthDays(owner, +year, +month);
+    return await this.calendarDayService.getMonthDays(+year, +month);
   }
 
   @Get(":uuid")
-  async findOneMonthDay(@Param("uuid") dayUuid: uuid4): Promise<CalendarDay> {
-    return await this.calendarDayService.findOneMonthDay(dayUuid);
+  async getCalendarDay(@Param("uuid") dayUuid: uuid4): Promise<CalendarDay> {
+    return await this.calendarDayService.getCalendarDay(dayUuid);
   }
 
   @Patch(":uuid")
-  updateOneMonthDay(
+  updateCalendarDay(
     @Param("uuid") dayUuid: uuid4,
     @Body() updateCalendarDayDto: UpdateCalendarDayDto
   ): Promise<CalendarDay> {
-    return this.calendarDayService.updateOneMonthDay(
+    return this.calendarDayService.updateCalendarDay(
       dayUuid,
       updateCalendarDayDto
     );

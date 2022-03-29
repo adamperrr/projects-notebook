@@ -16,12 +16,16 @@ export class CalendarDayService {
     private readonly calendarDayRepository: Repository<CalendarDay>
   ) {}
 
-  async createMonthDay(
+  async createDay(
     createCalendarDayDto: CreateCalendarDayDto
   ): Promise<CalendarDay> {
-    const calendarDayOwner = await this.usersRepository.findOneOrFail(
-      createCalendarDayDto.owner
-    );
+    // TODO: take user from auth
+    const calendarDayOwner = await this.usersRepository.findOneOrFail({
+      where: {
+        uuid: createCalendarDayDto.owner,
+      },
+    });
+
     const calendarDayData = {
       day: createCalendarDayDto.day,
       name: createCalendarDayDto.name,
@@ -34,12 +38,11 @@ export class CalendarDayService {
     return calendarDay;
   }
 
-  async findAllMonthDays(
-    owner: string,
-    year: number,
-    month: number
-  ): Promise<CalendarDay[]> {
-    const calendarDayOwner = await this.usersRepository.findOneOrFail(owner);
+  async getMonthDays(year: number, month: number): Promise<CalendarDay[]> {
+    // TODO: take user from auth
+    const calendarDayOwner = await this.usersRepository.findOneOrFail({
+      where: { firstName: "Adam" },
+    });
 
     const firstMothDay = new Date(year, month - 1, 1);
     const lastMothDay = new Date(year, month, 0);
@@ -54,7 +57,7 @@ export class CalendarDayService {
     return days;
   }
 
-  async findOneMonthDay(dayUuid: uuid4): Promise<CalendarDay> {
+  async getCalendarDay(dayUuid: uuid4): Promise<CalendarDay> {
     const day = await this.calendarDayRepository.findOneOrFail({
       where: {
         uuid: dayUuid,
@@ -64,7 +67,7 @@ export class CalendarDayService {
     return day;
   }
 
-  async updateOneMonthDay(
+  async updateCalendarDay(
     dayUuid: uuid4,
     updateCalendarDayDto: UpdateCalendarDayDto
   ): Promise<CalendarDay> {
