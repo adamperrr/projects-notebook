@@ -1,15 +1,20 @@
 import React, { useState, useEffect } from "react";
 import { useParams, useNavigate } from "react-router-dom";
-import monthNames from "../../constants/monthNames";
+import monthNames from "./constants/monthNames";
 import { getMonthDays } from "../../promises";
 import { getMonthDates, parseYearAndMonth } from "../../utils/dateHelpers";
-import CalendarDay, { emptyCalendarDay } from "./CalendarDay.type";
+import CalendarDay, { emptyCalendarDay } from "./types/CalendarDay.type";
+import CalendarTable from "./components/CalendarTable";
+import TopBar from "./components/TopBar";
+import PageTitle from "./components/PageTitle";
+import { CssBaseline, GlobalStyles } from "@mui/material";
+import FooterButtons from "./components/FooterButtons";
+import Footer from "./components/Footer";
 
 const NotesPage = () => {
-  const [date] = useState(new Date());
-  const [pageDate, setPageDate] = useState(new Date());
-  const [pageTitle, setPageTitle] = useState(
-    `${monthNames[date.getMonth()]} ${date.getFullYear()}`
+  const [pageDate, setPageDate] = useState<Date>(new Date());
+  const [pageTitle, setPageTitle] = useState<string>(
+    `${monthNames[new Date().getMonth()]} ${new Date().getFullYear()}`
   );
   const [calendar, setCalendar] = useState<Array<CalendarDay>>([]);
 
@@ -26,30 +31,25 @@ const NotesPage = () => {
       const [yearNumber, monthNumber, dayNumber] = monthDay.day.split("-");
       calendar_[+dayNumber - 1] = {
         ...monthDay,
-        day: new Date(yearNumber, monthNumber - 1, dayNumber),
+        day: new Date(+yearNumber, +monthNumber - 1, +dayNumber),
         isSaved: true,
       };
     }
 
-    console.log(calendar_);
     setCalendar(calendar_);
   };
 
   const loadMonthDays = async () => {
-    getMonthDays(pageDate.getFullYear(), pageDate.getMonth() + 1)
-      .then((monthDaysFromApi) => {
-        generateFullCalendar(monthDaysFromApi);
-      })
-      .catch((err) => {
-        console.log(err);
-      });
+    getMonthDays(pageDate.getFullYear(), pageDate.getMonth())
+      .then((monthDaysFromApi) => generateFullCalendar(monthDaysFromApi))
+      .catch((err) => console.log(err));
   };
 
-  useEffect(() => {
+  const parseParamsAndFetchData = () => {
     const [areYearAndMonthOk, pageDate_] = parseYearAndMonth(
       params?.year || "",
       params?.month || "",
-      date
+      new Date()
     );
 
     if (!areYearAndMonthOk) {
@@ -62,18 +62,28 @@ const NotesPage = () => {
     );
 
     loadMonthDays();
+  };
+
+  useEffect(() => {
+    parseParamsAndFetchData();
   }, []);
+
+  useEffect(() => {
+    parseParamsAndFetchData();
+  }, [params]);
 
   return (
     <React.Fragment>
-      <h1>{pageTitle}</h1>
-      <ul>
-        {calendar.map(({ day, name, description, uuid }) => (
-          <li>
-            {day.toString()} - {name} - {description} - {uuid ? uuid : ""}
-          </li>
-        ))}
-      </ul>
+      <GlobalStyles
+        styles={{ ul: { margin: 0, padding: 0, listStyle: "none" } }}
+      />
+      <CssBaseline />
+
+      <TopBar />
+      <PageTitle pageTitle={pageTitle} />
+      <CalendarTable calendar={calendar} />
+      <FooterButtons pageDate={pageDate} />
+      <Footer />
     </React.Fragment>
   );
 };
