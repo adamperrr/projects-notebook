@@ -1,16 +1,16 @@
-import { IsDate, IsNotEmpty } from "class-validator";
+import { IsDateString, IsNotEmpty } from 'class-validator';
 
 export class CreateCalendarDayDto {
   @IsNotEmpty()
-  @IsDate()
-  day: Date;
+  @IsDateString()
+    day: Date;
 
   @IsNotEmpty()
-  name: string;
+    name: string;
 
   @IsNotEmpty()
-  description: string;
+    description: string;
 
   @IsNotEmpty()
-  owner: string;
+    owner: string;
 }

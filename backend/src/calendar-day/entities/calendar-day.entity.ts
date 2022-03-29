@@ -1,43 +1,35 @@
 import {
-  BaseEntity,
   Column,
   CreateDateColumn,
   Entity,
   ManyToOne,
   PrimaryGeneratedColumn,
   UpdateDateColumn,
-} from "typeorm";
-import { IsDate, IsNotEmpty, IsOptional, IsUUID } from "class-validator";
-import { User } from "../../user/entities/user.entity";
+} from 'typeorm';
+import { User } from '../../user/entities/user.entity';
 
 @Entity()
 export class CalendarDay {
-  @PrimaryGeneratedColumn("uuid")
-  @IsNotEmpty()
-  @IsUUID()
-  uuid: string;
+  @PrimaryGeneratedColumn('uuid')
+    uuid: string;
 
-  @Column({ type: "date" })
-  @IsNotEmpty()
-  @IsDate()
-  day: Date;
+  @Column({ type: 'date' })
+    day: Date;
 
   @Column()
-  @IsNotEmpty()
-  name: string;
+    name: string;
 
   @Column()
-  @IsOptional()
-  description: string;
+    description: string;
 
   @ManyToOne(() => User, (user) => user.calendarDays)
-  owner: User;
+    owner: User;
 
   @Column()
   @CreateDateColumn()
-  createdAt: Date;
+    createdAt: Date;
 
   @Column()
   @UpdateDateColumn()
-  updatedAt: Date;
+    updatedAt: Date;
 }
