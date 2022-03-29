@@ -22,23 +22,23 @@ export class CalendarDayController {
   constructor(private readonly calendarDayService: CalendarDayService) {}
 
   @Post()
-  async createDay(
+  createDay(
     @Body() createCalendarDayDto: CreateCalendarDayDto
   ): Promise<CalendarDay> {
-    return await this.calendarDayService.createDay(createCalendarDayDto);
+    return this.calendarDayService.createDay(createCalendarDayDto);
   }
 
   @Get(":year/:month")
-  async getMonthDays(
+  getMonthDays(
     @Param("year") year: number,
     @Param("month") month: number
   ): Promise<CalendarDay[]> {
-    return await this.calendarDayService.getMonthDays(+year, +month);
+    return this.calendarDayService.getMonthDays(+year, +month);
   }
 
   @Get(":uuid")
-  async getCalendarDay(@Param("uuid") dayUuid: uuid4): Promise<CalendarDay> {
-    return await this.calendarDayService.getCalendarDay(dayUuid);
+  getCalendarDay(@Param("uuid") dayUuid: uuid4): Promise<CalendarDay> {
+    return this.calendarDayService.getCalendarDay(dayUuid);
   }
 
   @Patch(":uuid")
