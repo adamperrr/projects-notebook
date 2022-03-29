@@ -14,7 +14,10 @@ import { UpdateCalendarDayDto } from "./dto/update-calendar-day.dto";
 import { v4 as uuid4 } from "uuid";
 import { CalendarDay } from "./entities/calendar-day.entity";
 
-@Controller("calendar-day")
+@Controller({
+  path: "calendar-day",
+  version: "1",
+})
 export class CalendarDayController {
   constructor(private readonly calendarDayService: CalendarDayService) {}
 
