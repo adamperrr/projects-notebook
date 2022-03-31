@@ -29,11 +29,11 @@ export class CalendarDayController {
   }
 
   @Get(":year/:month")
-  getMonthDays(
+  getCalendarDays(
     @Param("year") year: number,
     @Param("month") month: number
   ): Promise<CalendarDay[]> {
-    return this.calendarDayService.getMonthDays(+year, +month);
+    return this.calendarDayService.getCalendarDays(+year, +month);
   }
 
   @Get(":uuid")
