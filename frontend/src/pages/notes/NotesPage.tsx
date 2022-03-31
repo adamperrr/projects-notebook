@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import monthNames from "./constants/monthNames";
-import { getMonthDays } from "../../promises";
+import { getMonthDaysPromise } from "../../promises";
 import { getMonthDates, parseYearAndMonth } from "../../utils/dateHelpers";
 import CalendarDay, { emptyCalendarDay } from "./types/CalendarDay.type";
 import CalendarTable from "./components/CalendarTable";
@@ -28,22 +28,18 @@ const NotesPage = () => {
   const navigate = useNavigate();
 
   const generateFullCalendar = (monthDaysFromApi: any) => {
-    // console.log(
-    //   "[generateFullCalendar] pageYear:",
-    //   pageYear,
-    //   "pageMonthNumber:",
-    //   pageMonthNumber
-    // );
-
     let calendar_ = getMonthDates(pageYear, pageMonthNumber).map(
-      (date: Date) => ({ ...emptyCalendarDay, day: date })
+      (date: Date) => ({
+        ...emptyCalendarDay,
+        day: date,
+      })
     );
 
     for (const monthDay of monthDaysFromApi) {
       const [yearNumber, monthNumber, dayNumber] = monthDay.day.split("-");
       calendar_[+dayNumber - 1] = {
         ...monthDay,
-        day: new Date(+yearNumber, +monthNumber, +dayNumber),
+        day: new Date(+yearNumber, +monthNumber - 1, +dayNumber),
         isSaved: true,
       };
     }
@@ -53,8 +49,7 @@ const NotesPage = () => {
   };
 
   const loadMonthDays = () => {
-    getMonthDays(pageYear, pageMonthNumber)
-      .then((res) => res.json())
+    getMonthDaysPromise(pageYear, pageMonthNumber)
       .then((monthDaysFromApi) => generateFullCalendar(monthDaysFromApi))
       .catch((err) => console.log(err));
   };
@@ -83,11 +78,7 @@ const NotesPage = () => {
 
   useEffect(() => {
     parseParamsAndFetchData();
-  }, [params.year, params.month]);
-
-  useEffect(() => {
-    parseParamsAndFetchData();
-  }, [pageYear, pageMonthNumber]);
+  }, [params.year, params.month, pageYear, pageMonthNumber]);
 
   return (
     <React.Fragment>
