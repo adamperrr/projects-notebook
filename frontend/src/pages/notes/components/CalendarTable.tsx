@@ -14,7 +14,7 @@ import {
 } from "@mui/material";
 import CalendarDay from "../types/CalendarDay.type";
 import { getIsoDateString } from "../../../utils/dateHelpers";
-import Weekday from "../constants/Weekday";
+import Weekday from "../constants/Weekday.enum";
 
 const CalendarTable = ({
   calendarLoaded,
