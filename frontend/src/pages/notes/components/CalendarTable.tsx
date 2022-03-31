@@ -14,7 +14,7 @@ import {
 } from "@mui/material";
 import CalendarDay from "../types/CalendarDay.type";
 import { getIsoDateString } from "../../../utils/dateHelpers";
-import weekdays from "../constants/weekdays";
+import Weekday from "../constants/Weekday";
 
 const CalendarTable = ({
   calendarLoaded,
@@ -57,7 +57,7 @@ const CalendarTable = ({
                       Weekday
                     </TableCell>
                     <TableCell
-                      style={{ width: 175 }}
+                      style={{ width: 250 }}
                       align="left"
                       padding="normal"
                     >
@@ -89,7 +89,8 @@ const CalendarTable = ({
                             ? {
                                 backgroundColor: "#bdbdbd",
                               }
-                            : day.getDay() === 0 || day.getDay() === 6
+                            : day.getDay() === Weekday.Saturday ||
+                              day.getDay() === Weekday.Sunday
                             ? {
                                 backgroundColor: "#e0e0e0",
                               }
@@ -111,15 +112,18 @@ const CalendarTable = ({
                           align="left"
                           padding="normal"
                         >
-                          {weekdays[day.getDay()]}
+                          {Weekday[day.getDay()]}
                         </TableCell>
                         <TableCell
-                          style={{ width: 175 }}
+                          style={{ width: 250 }}
                           align="left"
                           padding="normal"
                         >
-                          {day.getDay() === 0 || day.getDay() === 6
-                            ? "Weekend"
+                          {day.getDay() === Weekday.Saturday ||
+                          day.getDay() === Weekday.Sunday
+                            ? name
+                              ? `Weekend | ${name}`
+                              : "Weekend"
                             : name}
                         </TableCell>
                         <TableCell align="left" padding="normal">

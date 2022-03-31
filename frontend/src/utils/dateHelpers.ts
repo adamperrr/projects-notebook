@@ -3,10 +3,11 @@ export const getMonthDates = (year: number, monthNumber: number): Date[] => {
   const lastDay: number = lastDayDate.getDate();
   const monthIndex = monthNumber - 1;
 
-  let dates: Date[] = [];
+  let dates: Date[] = Array<Date>(lastDay);
   for (let day = 1; day <= lastDay; day++) {
     const newDate = new Date(year, monthIndex, day);
-    dates.push(newDate);
+
+    dates[day - 1] = newDate;
   }
 
   return dates;

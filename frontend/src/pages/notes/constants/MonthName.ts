@@ -1,5 +1,5 @@
-const monthNames: string[] = [
-  "January",
+enum MonthName {
+  "January" = 0,
   "February",
   "March",
   "April",
@@ -11,6 +11,6 @@ const monthNames: string[] = [
   "October",
   "November",
   "December",
-];
+}
 
-export default monthNames;
+export default MonthName;

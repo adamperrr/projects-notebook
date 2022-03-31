@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { useParams, useNavigate } from "react-router-dom";
-import monthNames from "./constants/monthNames";
+import monthNames from "./constants/MonthName";
 import { getMonthDaysPromise } from "../../promises";
 import { getMonthDates, parseYearAndMonth } from "../../utils/dateHelpers";
 import CalendarDay, { emptyCalendarDay } from "./types/CalendarDay.type";
@@ -10,6 +10,7 @@ import PageTitle from "./components/PageTitle";
 import { CssBaseline, GlobalStyles } from "@mui/material";
 import FooterButtons from "./components/FooterButtons";
 import Footer from "./components/Footer";
+import Weekday from "./constants/Weekday";
 
 const NotesPage = () => {
   const params = useParams();
@@ -32,6 +33,14 @@ const NotesPage = () => {
       (date: Date) => ({
         ...emptyCalendarDay,
         day: date,
+        name:
+          date.getDay() === Weekday.Saturday || date.getDay() === Weekday.Sunday
+            ? ""
+            : emptyCalendarDay.name,
+        description:
+          date.getDay() === Weekday.Saturday || date.getDay() === Weekday.Sunday
+            ? ""
+            : emptyCalendarDay.description,
       })
     );
 
