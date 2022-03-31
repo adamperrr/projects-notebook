@@ -62,20 +62,8 @@ const NotesPage = () => {
   const parseParamsAndFetchData = () => {
     setCalendarLoaded(false);
 
-    // console.log(
-    //   "[parseParamsAndFetchData] <1> params?.year:",
-    //   params?.year,
-    //   "params?.month:",
-    //   params?.month
-    // );
     const [areYearAndMonthOk, pageYear_, pageMonthNumber_, pageDate_] =
       parseYearAndMonth(params?.year || "", params?.month || "", new Date());
-    // console.log(
-    //   "[parseParamsAndFetchData] <2> pageYear_:",
-    //   pageYear_,
-    //   "pageMonthNumber_:",
-    //   pageMonthNumber_
-    // );
 
     if (!areYearAndMonthOk) {
       navigate("/");
