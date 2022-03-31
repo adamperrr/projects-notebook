@@ -3,10 +3,11 @@ export const getMonthDates = (year: number, monthNumber: number): Date[] => {
   const lastDay: number = lastDayDate.getDate();
   const monthIndex = monthNumber - 1;
 
-  let dates: Date[] = [];
+  let dates: Date[] = Array<Date>(lastDay);
   for (let day = 1; day <= lastDay; day++) {
     const newDate = new Date(year, monthIndex, day);
-    dates.push(newDate);
+
+    dates[day - 1] = newDate;
   }
 
   return dates;
@@ -36,12 +37,12 @@ export const parseYearAndMonth = (
     Number(month) >= 1 &&
     Number(month) <= 12;
 
-  const currentPageYear: number = areYearAndMonthOk
-    ? +year
-    : +date.getFullYear();
   const currentPageMonth: number = areYearAndMonthOk
     ? +month
     : +date.getMonth() + 1;
+  const currentPageYear: number = areYearAndMonthOk
+    ? +year
+    : +date.getFullYear();
   const currentPageDate: Date = new Date(
     currentPageYear,
     currentPageMonth - 1,

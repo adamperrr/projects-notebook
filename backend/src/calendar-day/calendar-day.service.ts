@@ -38,23 +38,26 @@ export class CalendarDayService {
     return calendarDay;
   }
 
-  async getMonthDays(year: number, month: number): Promise<CalendarDay[]> {
+  async getCalendarDays(
+    year: number,
+    monthNumber: number
+  ): Promise<CalendarDay[]> {
     // TODO: take user from auth
     const calendarDayOwner = await this.usersRepository.findOneOrFail({
       where: { firstName: "Adam" },
     });
 
-    const firstMothDay = new Date(year, month - 1, 1);
-    const lastMothDay = new Date(year, month, 0);
+    const firstMothDay = new Date(year, monthNumber - 1, 1);
+    const lastMothDay = new Date(year, monthNumber, 0);
 
-    const days = await this.calendarDayRepository.find({
+    const daysFromDb = await this.calendarDayRepository.find({
       where: {
         owner: calendarDayOwner,
         day: Between(firstMothDay, lastMothDay),
       },
     });
 
-    return days;
+    return daysFromDb;
   }
 
   async getCalendarDay(dayUuid: uuid4): Promise<CalendarDay> {
