@@ -27,7 +27,7 @@ export const parseYearAndMonth = (
   year: string,
   month: string,
   date: Date
-): [boolean, Date] => {
+): [boolean, number, number, Date] => {
   const isPositiveInt = (num: any) => num > 0 && num % parseInt(num) === 0;
 
   const areYearAndMonthOk: boolean =
@@ -48,7 +48,12 @@ export const parseYearAndMonth = (
     1
   );
 
-  return [areYearAndMonthOk, currentPageDate];
+  return [
+    areYearAndMonthOk,
+    currentPageYear,
+    currentPageMonth,
+    currentPageDate,
+  ];
 };
 
 export const getPrevPageYearAndMonth = (date: Date): [number, number] => {

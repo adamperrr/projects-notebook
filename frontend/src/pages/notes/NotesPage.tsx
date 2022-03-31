@@ -12,54 +12,79 @@ import FooterButtons from "./components/FooterButtons";
 import Footer from "./components/Footer";
 
 const NotesPage = () => {
+  const params = useParams();
   const [pageDate, setPageDate] = useState<Date>(new Date());
+  const [pageYear, setPageYear] = useState<number>(new Date().getFullYear());
+  const [pageMonthNumber, setPageMonthNumber] = useState<number>(
+    new Date().getMonth() + 1
+  );
+
   const [pageTitle, setPageTitle] = useState<string>(
     `${monthNames[new Date().getMonth()]} ${new Date().getFullYear()}`
   );
+  const [calendarLoaded, setCalendarLoaded] = useState<boolean>(false);
   const [calendar, setCalendar] = useState<Array<CalendarDay>>([]);
 
-  const params = useParams();
   const navigate = useNavigate();
 
   const generateFullCalendar = (monthDaysFromApi: any) => {
-    let calendar_ = getMonthDates(
-      pageDate.getFullYear(),
-      pageDate.getMonth() + 1
-    ).map((date: Date) => ({ ...emptyCalendarDay, day: date }));
+    // console.log(
+    //   "[generateFullCalendar] pageYear:",
+    //   pageYear,
+    //   "pageMonthNumber:",
+    //   pageMonthNumber
+    // );
+
+    let calendar_ = getMonthDates(pageYear, pageMonthNumber).map(
+      (date: Date) => ({ ...emptyCalendarDay, day: date })
+    );
 
     for (const monthDay of monthDaysFromApi) {
       const [yearNumber, monthNumber, dayNumber] = monthDay.day.split("-");
       calendar_[+dayNumber - 1] = {
         ...monthDay,
-        day: new Date(+yearNumber, +monthNumber - 1, +dayNumber),
+        day: new Date(+yearNumber, +monthNumber, +dayNumber),
         isSaved: true,
       };
     }
 
     setCalendar(calendar_);
+    setCalendarLoaded(true);
   };
 
-  const loadMonthDays = async () => {
-    getMonthDays(pageDate.getFullYear(), pageDate.getMonth())
+  const loadMonthDays = () => {
+    getMonthDays(pageYear, pageMonthNumber)
+      .then((res) => res.json())
       .then((monthDaysFromApi) => generateFullCalendar(monthDaysFromApi))
       .catch((err) => console.log(err));
   };
 
   const parseParamsAndFetchData = () => {
-    const [areYearAndMonthOk, pageDate_] = parseYearAndMonth(
-      params?.year || "",
-      params?.month || "",
-      new Date()
-    );
+    setCalendarLoaded(false);
+
+    // console.log(
+    //   "[parseParamsAndFetchData] <1> params?.year:",
+    //   params?.year,
+    //   "params?.month:",
+    //   params?.month
+    // );
+    const [areYearAndMonthOk, pageYear_, pageMonthNumber_, pageDate_] =
+      parseYearAndMonth(params?.year || "", params?.month || "", new Date());
+    // console.log(
+    //   "[parseParamsAndFetchData] <2> pageYear_:",
+    //   pageYear_,
+    //   "pageMonthNumber_:",
+    //   pageMonthNumber_
+    // );
 
     if (!areYearAndMonthOk) {
       navigate("/");
     }
 
     setPageDate(pageDate_);
-    setPageTitle(
-      `${monthNames[pageDate_.getMonth()]} ${pageDate_.getFullYear()}`
-    );
+    setPageYear(pageYear_);
+    setPageMonthNumber(pageMonthNumber_);
+    setPageTitle(`${monthNames[pageMonthNumber_ - 1]} ${pageYear_}`);
 
     loadMonthDays();
   };
@@ -70,7 +95,11 @@ const NotesPage = () => {
 
   useEffect(() => {
     parseParamsAndFetchData();
-  }, [params]);
+  }, [params.year, params.month]);
+
+  useEffect(() => {
+    parseParamsAndFetchData();
+  }, [pageYear, pageMonthNumber]);
 
   return (
     <React.Fragment>
@@ -81,7 +110,7 @@ const NotesPage = () => {
 
       <TopBar />
       <PageTitle pageTitle={pageTitle} />
-      <CalendarTable calendar={calendar} />
+      <CalendarTable calendarLoaded={calendarLoaded} calendar={calendar} />
       <FooterButtons pageDate={pageDate} />
       <Footer />
     </React.Fragment>
