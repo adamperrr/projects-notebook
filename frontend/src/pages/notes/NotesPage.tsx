@@ -83,10 +83,6 @@ const NotesPage = () => {
 
   useEffect(() => {
     parseParamsAndFetchData();
-  }, []);
-
-  useEffect(() => {
-    parseParamsAndFetchData();
   }, [params.year, params.month, pageYear, pageMonthNumber]);
 
   return (

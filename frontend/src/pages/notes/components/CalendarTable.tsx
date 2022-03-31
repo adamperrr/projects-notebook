@@ -88,6 +88,8 @@ const CalendarTable = ({
                           day.toDateString() === new Date().toDateString()
                             ? {
                                 backgroundColor: "#bdbdbd",
+                                borderTop: "3px solid #7d7c7c",
+                                borderBottom: "3px solid #7d7c7c",
                               }
                             : day.getDay() === Weekday.Saturday ||
                               day.getDay() === Weekday.Sunday
@@ -95,7 +97,7 @@ const CalendarTable = ({
                                 backgroundColor: "#e0e0e0",
                               }
                             : {
-                                backgroundColor: "",
+                                backgroundColor: "transparent",
                               }
                         }
                       >
@@ -120,11 +122,15 @@ const CalendarTable = ({
                           padding="normal"
                         >
                           {day.getDay() === Weekday.Saturday ||
-                          day.getDay() === Weekday.Sunday
-                            ? name
-                              ? `Weekend | ${name}`
-                              : "Weekend"
-                            : name}
+                          day.getDay() === Weekday.Sunday ? (
+                            name ? (
+                              <b>Weekend | {name}</b>
+                            ) : (
+                              <b>Weekend</b>
+                            )
+                          ) : (
+                            name
+                          )}
                         </TableCell>
                         <TableCell align="left" padding="normal">
                           {description}
