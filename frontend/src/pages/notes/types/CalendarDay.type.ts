@@ -10,8 +10,8 @@ type CalendarDay = {
 
 export const emptyCalendarDay = {
   day: new Date(),
-  name: "Project",
-  description: "Lorem ipsum",
+  name: "",
+  description: "",
   isSaved: false,
 };
 

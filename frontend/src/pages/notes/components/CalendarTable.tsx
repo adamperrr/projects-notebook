@@ -19,9 +19,13 @@ import Weekday from "../constants/Weekday.enum";
 const CalendarTable = ({
   calendarLoaded,
   calendar,
+  handleOpenModal,
+  setModalCalendarDay,
 }: {
   calendarLoaded: boolean;
   calendar: CalendarDay[];
+  handleOpenModal: () => void;
+  setModalCalendarDay: React.Dispatch<React.SetStateAction<CalendarDay>>;
 }) => {
   return (
     <React.Fragment>
@@ -76,83 +80,94 @@ const CalendarTable = ({
                   </TableRow>
                 </TableHead>
                 <TableBody>
-                  {calendar.map(
-                    ({ day, name, description, isSaved }: CalendarDay) => (
-                      <TableRow
-                        hover
-                        key={day.toString()}
-                        sx={{
-                          "&:last-child td, &:last-child th": { border: 0 },
-                        }}
-                        style={
-                          day.toDateString() === new Date().toDateString()
-                            ? {
-                                backgroundColor: "#bdbdbd",
-                                borderTop: "3px solid #7d7c7c",
-                                borderBottom: "3px solid #7d7c7c",
-                              }
-                            : day.getDay() === Weekday.Saturday ||
-                              day.getDay() === Weekday.Sunday
-                            ? {
-                                backgroundColor: "#e0e0e0",
-                              }
-                            : {
-                                backgroundColor: "transparent",
-                              }
-                        }
+                  {calendar.map((calendarDay: CalendarDay) => (
+                    <TableRow
+                      hover
+                      key={calendarDay.day.toString()}
+                      sx={{
+                        "&:last-child td, &:last-child th": { border: 0 },
+                      }}
+                      style={
+                        calendarDay.day.toDateString() ===
+                        new Date().toDateString()
+                          ? {
+                              backgroundColor: "#bdbdbd",
+                              borderTop: "3px solid #7d7c7c",
+                              borderBottom: "3px solid #7d7c7c",
+                            }
+                          : calendarDay.day.getDay() === Weekday.Saturday ||
+                            calendarDay.day.getDay() === Weekday.Sunday
+                          ? {
+                              backgroundColor: "#e0e0e0",
+                            }
+                          : {}
+                      }
+                    >
+                      <TableCell
+                        component="th"
+                        scope="row"
+                        align="left"
+                        padding="normal"
                       >
-                        <TableCell
-                          component="th"
-                          scope="row"
-                          align="left"
-                          padding="normal"
-                        >
-                          <b>{getIsoDateString(day)}</b>
-                        </TableCell>
-                        <TableCell
-                          style={{ width: 100 }}
-                          align="left"
-                          padding="normal"
-                        >
-                          {Weekday[day.getDay()]}
-                        </TableCell>
-                        <TableCell
-                          style={{ width: 250 }}
-                          align="left"
-                          padding="normal"
-                        >
-                          {day.getDay() === Weekday.Saturday ||
-                          day.getDay() === Weekday.Sunday ? (
-                            name ? (
-                              <b>Weekend | {name}</b>
-                            ) : (
-                              <b>Weekend</b>
-                            )
+                        <b>{getIsoDateString(calendarDay.day)}</b>
+                      </TableCell>
+                      <TableCell
+                        style={{ width: 100 }}
+                        align="left"
+                        padding="normal"
+                      >
+                        {Weekday[calendarDay.day.getDay()]}
+                      </TableCell>
+                      <TableCell
+                        style={{ width: 250 }}
+                        align="left"
+                        padding="normal"
+                      >
+                        {calendarDay.day.getDay() === Weekday.Saturday ||
+                        calendarDay.day.getDay() === Weekday.Sunday ? (
+                          calendarDay.name ? (
+                            <b>Weekend | {calendarDay.name}</b>
                           ) : (
-                            name
-                          )}
-                        </TableCell>
-                        <TableCell align="left" padding="normal">
-                          {description}
-                        </TableCell>
-                        <TableCell
-                          style={{ width: 100 }}
-                          align="right"
-                          padding="normal"
-                        >
-                          {isSaved ? (
-                            <Link href="#" underline="none">
-                              Edit
-                            </Link>
-                          ) : (
-                            <Link href="#" underline="none">
-                              Create
-                            </Link>
-                          )}
-                        </TableCell>
-                      </TableRow>
-                    )
-                  )}
+                            <b>Weekend</b>
+                          )
+                        ) : (
+                          calendarDay.name
+                        )}
+                      </TableCell>
+                      <TableCell align="left" padding="normal">
+                        {calendarDay.description}
+                      </TableCell>
+                      <TableCell
+                        style={{ width: 100 }}
+                        align="right"
+                        padding="normal"
+                      >
+                        {calendarDay.isSaved ? (
+                          <Link
+                            href="#"
+                            onClick={() => {
+                              handleOpenModal();
+                              setModalCalendarDay(calendarDay);
+                            }}
+                            underline="none"
+                          >
+                            Edit
+                          </Link>
+                        ) : (
+                          <Link
+                            href="#"
+                            onClick={() => {
+                              handleOpenModal();
+                              setModalCalendarDay(calendarDay);
+                            }}
+                            underline="none"
+                          >
+                            Create
+                          </Link>
+                        )}
+                      </TableCell>
+                    </TableRow>
+                  ))}
                 </TableBody>
               </Table>
             </TableContainer>
