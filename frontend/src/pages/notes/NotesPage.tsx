@@ -98,6 +98,7 @@ const NotesPage = () => {
       <ProjectModificationModal
         isModalOpen={isModalOpen}
         modalCalendarDay={modalCalendarDay}
+        setModalCalendarDay={setModalCalendarDay}
         handleCloseModal={handleCloseModal}
         showSuccessModalAlert={showSuccessModalAlert}
         setShowSuccessModalAlert={setShowSuccessModalAlert}
