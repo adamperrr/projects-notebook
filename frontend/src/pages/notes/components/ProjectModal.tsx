@@ -11,26 +11,20 @@ import {
 import CalendarDay from "../types/CalendarDay.type";
 import { getIsoDateString } from "../../../utils/dateHelpers";
 import { createDay, editDay } from "../promises";
+import useCalendar from "../contexts/CalendarContext";
 
-const ProjectModificationModal = ({
-  isModalOpen,
-  modalCalendarDay,
-  setModalCalendarDay,
-  handleCloseModal,
-  showSuccessModalAlert,
-  setShowSuccessModalAlert,
-  showErrorModalAlert,
-  setShowErrorModalAlert,
-}: {
-  isModalOpen: boolean;
-  modalCalendarDay: CalendarDay;
-  setModalCalendarDay: (arg: CalendarDay) => void;
-  handleCloseModal: () => void;
-  showSuccessModalAlert: boolean;
-  setShowSuccessModalAlert: (arg: boolean) => void;
-  showErrorModalAlert: boolean;
-  setShowErrorModalAlert: (arg: boolean) => void;
-}) => {
+const ProjectModal = () => {
+  const {
+    isModalOpen,
+    handleCloseModal,
+    modalCalendarDay,
+    setModalCalendarDay,
+    showSuccessModalAlert,
+    setShowSuccessModalAlert,
+    showErrorModalAlert,
+    setShowErrorModalAlert,
+  } = useCalendar();
+
   const style = {
     position: "absolute" as "absolute",
     top: "50%",
@@ -174,4 +168,4 @@ const ProjectModificationModal = ({
   );
 };
 
-export default ProjectModificationModal;
+export default ProjectModal;

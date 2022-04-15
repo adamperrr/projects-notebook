@@ -15,18 +15,12 @@ import {
 import CalendarDay from "../types/CalendarDay.type";
 import { getIsoDateString } from "../../../utils/dateHelpers";
 import Weekday from "../constants/Weekday.enum";
+import useCalendar from "../contexts/CalendarContext";
 
-const CalendarTable = ({
-  calendarLoaded,
-  calendar,
-  handleOpenModal,
-  setModalCalendarDay,
-}: {
-  calendarLoaded: boolean;
-  calendar: CalendarDay[];
-  handleOpenModal: () => void;
-  setModalCalendarDay: React.Dispatch<React.SetStateAction<CalendarDay>>;
-}) => {
+const CalendarTable = () => {
+  const { calendar, calendarLoaded, handleOpenModal, setModalCalendarDay } =
+    useCalendar();
+
   return (
     <React.Fragment>
       {!calendarLoaded && (

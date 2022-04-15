@@ -3,7 +3,7 @@ import { useParams, useNavigate } from "react-router-dom";
 import monthNames from "./constants/MonthName.enum";
 import { getMonthDaysPromise } from "./promises";
 import { getMonthDates, parseYearAndMonth } from "../../utils/dateHelpers";
-import CalendarDay, { emptyCalendarDay } from "./types/CalendarDay.type";
+import { emptyCalendarDay } from "./types/CalendarDay.type";
 import CalendarTable from "./components/CalendarTable";
 import TopBar from "./components/TopBar";
 import PageTitle from "./components/PageTitle";
@@ -11,18 +11,16 @@ import { CssBaseline, GlobalStyles } from "@mui/material";
 import FooterButtons from "./components/FooterButtons";
 import Footer from "./components/Footer";
 import Weekday from "./constants/Weekday.enum";
-import ProjectModificationModal from "./components/ProjectModal";
+import ProjectModal from "./components/ProjectModal";
+import useCalendar from "./contexts/CalendarContext";
 
 const NotesPage = () => {
+  const { setCalendar, setCalendarLoaded, isModalOpen } = useCalendar();
+
   const [pageDate, setPageDate] = useState<Date>(new Date());
   const [pageTitle, setPageTitle] = useState<string>(
     `${monthNames[new Date().getMonth()]} ${new Date().getFullYear()}`
   );
-  const [calendarLoaded, setCalendarLoaded] = useState<boolean>(false);
-  const [calendar, setCalendar] = useState<Array<CalendarDay>>([]);
-  const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
-  const [modalCalendarDay, setModalCalendarDay] =
-    useState<CalendarDay>(emptyCalendarDay);
 
   const params = useParams();
   const navigate = useNavigate();
@@ -61,16 +59,6 @@ const NotesPage = () => {
       .then((monthDaysFromApi) => generateFullCalendar(monthDaysFromApi))
       .catch((err) => console.log(err));
   };
-  const [showSuccessModalAlert, setShowSuccessModalAlert] =
-    useState<boolean>(false);
-  const [showErrorModalAlert, setShowErrorModalAlert] =
-    useState<boolean>(false);
-  const handleOpenModal = (): void => setIsModalOpen(true);
-  const handleCloseModal = (): void => {
-    setShowSuccessModalAlert(false);
-    setShowErrorModalAlert(false);
-    setIsModalOpen(false);
-  };
 
   useEffect(() => {
     setCalendarLoaded(false);
@@ -86,7 +74,7 @@ const NotesPage = () => {
     setPageTitle(`${monthNames[pageMonthNumber_ - 1]} ${pageYear_}`);
 
     loadMonthDays();
-  }, [params.year, params.month, pageDate.toString()]);
+  }, [params.year, params.month, pageDate.toString(), isModalOpen]);
 
   return (
     <React.Fragment>
@@ -95,25 +83,11 @@ const NotesPage = () => {
       />
       <CssBaseline />
 
-      <ProjectModificationModal
-        isModalOpen={isModalOpen}
-        modalCalendarDay={modalCalendarDay}
-        setModalCalendarDay={setModalCalendarDay}
-        handleCloseModal={handleCloseModal}
-        showSuccessModalAlert={showSuccessModalAlert}
-        setShowSuccessModalAlert={setShowSuccessModalAlert}
-        showErrorModalAlert={showErrorModalAlert}
-        setShowErrorModalAlert={setShowErrorModalAlert}
-      />
+      <ProjectModal />
 
       <TopBar />
       <PageTitle pageTitle={pageTitle} />
-      <CalendarTable
-        calendarLoaded={calendarLoaded}
-        calendar={calendar}
-        handleOpenModal={handleOpenModal}
-        setModalCalendarDay={setModalCalendarDay}
-      />
+      <CalendarTable />
       <FooterButtons pageDate={pageDate} />
       <Footer />
     </React.Fragment>
