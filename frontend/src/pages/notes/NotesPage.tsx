@@ -11,7 +11,7 @@ import { CssBaseline, GlobalStyles } from "@mui/material";
 import FooterButtons from "./components/FooterButtons";
 import Footer from "./components/Footer";
 import Weekday from "./constants/Weekday.enum";
-import ProjectModificationModal from "./components/ProjectModificationModal";
+import ProjectModificationModal from "./components/ProjectModal";
 
 const NotesPage = () => {
   const [pageDate, setPageDate] = useState<Date>(new Date());
@@ -61,8 +61,16 @@ const NotesPage = () => {
       .then((monthDaysFromApi) => generateFullCalendar(monthDaysFromApi))
       .catch((err) => console.log(err));
   };
+  const [showSuccessModalAlert, setShowSuccessModalAlert] =
+    useState<boolean>(false);
+  const [showErrorModalAlert, setShowErrorModalAlert] =
+    useState<boolean>(false);
   const handleOpenModal = (): void => setIsModalOpen(true);
-  const handleCloseModal = () => setTimeout(() => setIsModalOpen(false), 1000);
+  const handleCloseModal = (): void => {
+    setShowSuccessModalAlert(false);
+    setShowErrorModalAlert(false);
+    setIsModalOpen(false);
+  };
 
   useEffect(() => {
     setCalendarLoaded(false);
@@ -91,6 +99,10 @@ const NotesPage = () => {
         isModalOpen={isModalOpen}
         modalCalendarDay={modalCalendarDay}
         handleCloseModal={handleCloseModal}
+        showSuccessModalAlert={showSuccessModalAlert}
+        setShowSuccessModalAlert={setShowSuccessModalAlert}
+        showErrorModalAlert={showErrorModalAlert}
+        setShowErrorModalAlert={setShowErrorModalAlert}
       />
 
       <TopBar />
