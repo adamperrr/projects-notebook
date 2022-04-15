@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import monthNames from "./constants/MonthName.enum";
-import { getMonthDaysPromise } from "../../promises";
+import { getMonthDaysPromise } from "./promises";
 import { getMonthDates, parseYearAndMonth } from "../../utils/dateHelpers";
 import CalendarDay, { emptyCalendarDay } from "./types/CalendarDay.type";
 import CalendarTable from "./components/CalendarTable";

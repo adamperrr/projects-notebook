@@ -1,6 +1,6 @@
-import { API_URL } from "./constants";
-import CalendarDay from "./pages/notes/types/CalendarDay.type";
-import { getIsoDateString } from "./utils/dateHelpers";
+import { API_URL } from "../../constants";
+import CalendarDay from "./types/CalendarDay.type";
+import { getIsoDateString } from "../../utils/dateHelpers";
 
 export const getMonthDaysPromise = (
   year: number,
@@ -15,7 +15,7 @@ export const createDay = (calendarDay: CalendarDay): Promise<Response> => {
   const calendarDayWithOwner = {
     ...calendarDay,
     day: getIsoDateString(calendarDay.day),
-    owner: "c8158df9-6400-4d69-92e3-911a7668effc", // TODO: implement owner
+    owner: { uuid: "1a9db6f9-1c4f-41c4-9030-67e3a2026d84" }, // TODO: use owner from session
   };
 
   try {
@@ -39,7 +39,7 @@ export const editDay = (
   const calendarDayWithOwner = {
     ...calendarDay,
     day: getIsoDateString(calendarDay.day),
-    owner: "c8158df9-6400-4d69-92e3-911a7668effc", // TODO: implement owner
+    owner: { uuid: "1a9db6f9-1c4f-41c4-9030-67e3a2026d84" }, // TODO: use owner from session
   };
 
   try {

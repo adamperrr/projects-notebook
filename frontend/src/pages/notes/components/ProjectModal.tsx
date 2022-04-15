@@ -11,7 +11,7 @@ import {
 } from "@mui/material";
 import CalendarDay from "../types/CalendarDay.type";
 import { getIsoDateString } from "../../../utils/dateHelpers";
-import { createDay, editDay } from "../../../promises";
+import { createDay, editDay } from "../promises";
 
 const ProjectModificationModal = ({
   isModalOpen,
@@ -60,7 +60,7 @@ const ProjectModificationModal = ({
         ...modalCalendarDay,
         ...response,
         day: new Date(response.day),
-        owner: response.owner.uuid,
+        owner: { uuid: response.owner.uuid },
       };
 
       setModalCalendarDay(newModalCalendarDay);
@@ -83,7 +83,6 @@ const ProjectModificationModal = ({
         ...modalCalendarDay,
         ...response,
         day: new Date(response.day),
-        // owner: response.owner.uuid,
       });
     } catch (error: any) {
       console.log(error?.message || JSON.stringify(error));

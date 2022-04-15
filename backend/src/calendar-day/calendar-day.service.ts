@@ -21,13 +21,10 @@ export class CalendarDayService {
   ): Promise<CalendarDay> {
     // TODO: take user from auth
     const calendarDayOwner = await this.usersRepository.findOneOrFail({
-      where: { firstName: "Adam" },
+      where: {
+        uuid: createCalendarDayDto.owner.uuid,
+      },
     });
-    // const calendarDayOwner = await this.usersRepository.findOneOrFail({
-    //   where: {
-    //     uuid: createCalendarDayDto.owner,
-    //   },
-    // });
 
     const calendarDayData = {
       day: createCalendarDayDto.day,

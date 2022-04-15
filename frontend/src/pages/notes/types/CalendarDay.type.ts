@@ -5,6 +5,7 @@ type CalendarDay = {
   description: string;
   createdAt?: Date;
   updatedAt?: Date;
+  owner?: { uuid: string };
   isSaved: boolean;
 };
 

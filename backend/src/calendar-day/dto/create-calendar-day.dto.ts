@@ -1,16 +1,17 @@
-import { IsDateString, IsNotEmpty } from 'class-validator';
+import { IsDateString, IsNotEmpty } from "class-validator";
+import { User } from "../../user/entities/user.entity";
 
 export class CreateCalendarDayDto {
   @IsNotEmpty()
   @IsDateString()
-    day: Date;
+  day: Date;
 
   @IsNotEmpty()
-    name: string;
+  name: string;
 
   @IsNotEmpty()
-    description: string;
+  description: string;
 
   @IsNotEmpty()
-    owner: string;
+  owner: Partial<User>;
 }
