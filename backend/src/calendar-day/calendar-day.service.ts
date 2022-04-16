@@ -30,6 +30,7 @@ export class CalendarDayService {
       day: createCalendarDayDto.day,
       name: createCalendarDayDto.name,
       description: createCalendarDayDto.description,
+      workTime: createCalendarDayDto.workTime,
       owner: calendarDayOwner,
     };
 
@@ -82,6 +83,7 @@ export class CalendarDayService {
 
     day.name = updateCalendarDayDto.name;
     day.description = updateCalendarDayDto.description;
+    day.workTime = updateCalendarDayDto.workTime;
 
     const calendarDay = await this.calendarDayRepository.save(day);
 

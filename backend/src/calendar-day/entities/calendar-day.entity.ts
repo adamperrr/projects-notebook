@@ -5,31 +5,34 @@ import {
   ManyToOne,
   PrimaryGeneratedColumn,
   UpdateDateColumn,
-} from 'typeorm';
-import { User } from '../../user/entities/user.entity';
+} from "typeorm";
+import { User } from "../../user/entities/user.entity";
 
 @Entity()
 export class CalendarDay {
-  @PrimaryGeneratedColumn('uuid')
-    uuid: string;
+  @PrimaryGeneratedColumn("uuid")
+  uuid: string;
 
-  @Column({ type: 'date' })
-    day: Date;
-
-  @Column()
-    name: string;
+  @Column({ type: "date" })
+  day: Date;
 
   @Column()
-    description: string;
+  name: string;
+
+  @Column()
+  description: string;
+
+  @Column({ type: "float", default: 0 })
+  workTime: number;
 
   @ManyToOne(() => User, (user) => user.calendarDays)
-    owner: User;
+  owner: User;
 
   @Column()
   @CreateDateColumn()
-    createdAt: Date;
+  createdAt: Date;
 
   @Column()
   @UpdateDateColumn()
-    updatedAt: Date;
+  updatedAt: Date;
 }
