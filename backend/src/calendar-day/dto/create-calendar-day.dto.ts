@@ -16,7 +16,6 @@ export class CreateCalendarDayDto {
   @IsNotEmpty()
   name: string;
 
-  @IsNotEmpty()
   description: string;
 
   @IsNumber({ allowNaN: false, allowInfinity: false, maxDecimalPlaces: 2 })
