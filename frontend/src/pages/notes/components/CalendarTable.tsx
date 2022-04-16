@@ -56,6 +56,13 @@ const CalendarTable = () => {
                       Weekday
                     </TableCell>
                     <TableCell
+                      style={{ width: 60 }}
+                      align="left"
+                      padding="normal"
+                    >
+                      Time
+                    </TableCell>
+                    <TableCell
                       style={{ width: 250 }}
                       align="left"
                       padding="normal"
@@ -113,6 +120,9 @@ const CalendarTable = () => {
                       >
                         {Weekday[calendarDay.day.getDay()]}
                       </TableCell>
+                      <TableCell align="left" padding="normal">
+                        {calendarDay.workTime}
+                      </TableCell>
                       <TableCell
                         style={{ width: 250 }}
                         align="left"
@@ -129,6 +139,7 @@ const CalendarTable = () => {
                           calendarDay.name
                         )}
                       </TableCell>
+
                       <TableCell align="left" padding="normal">
                         {calendarDay.description}
                       </TableCell>

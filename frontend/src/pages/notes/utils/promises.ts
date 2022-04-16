@@ -16,6 +16,7 @@ export const createDay = (calendarDay: CalendarDay): Promise<Response> => {
     ...calendarDay,
     day: getIsoDateString(calendarDay.day),
     owner: { uuid: "1a9db6f9-1c4f-41c4-9030-67e3a2026d84" }, // TODO: use owner from session
+    workTime: +calendarDay.workTime,
   };
 
   try {
@@ -40,6 +41,7 @@ export const editDay = (
     ...calendarDay,
     day: getIsoDateString(calendarDay.day),
     owner: { uuid: "1a9db6f9-1c4f-41c4-9030-67e3a2026d84" }, // TODO: use owner from session
+    workTime: +calendarDay.workTime,
   };
 
   try {

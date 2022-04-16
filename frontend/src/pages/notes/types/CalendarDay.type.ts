@@ -3,6 +3,7 @@ type CalendarDay = {
   day: Date;
   name: string;
   description: string;
+  workTime: number;
   createdAt?: Date;
   updatedAt?: Date;
   owner?: { uuid: string };
@@ -13,6 +14,7 @@ export const emptyCalendarDay = {
   day: new Date(),
   name: "",
   description: "",
+  workTime: 0,
   isSaved: false,
 };
 

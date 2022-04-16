@@ -59,7 +59,7 @@ const NotesPage = () => {
   const loadMonthDays = (): void => {
     getMonthDaysPromise(pageDate.getFullYear(), pageDate.getMonth() + 1)
       .then((monthDaysFromApi) => generateFullCalendar(monthDaysFromApi))
-      .catch((err) => console.log(err));
+      .catch((err) => console.log(`[NotesPage - loadMonthDays]`, err));
   };
 
   useEffect(() => {

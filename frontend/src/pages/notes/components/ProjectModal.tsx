@@ -37,7 +37,7 @@ const ProjectModal = () => {
     p: 4,
   };
 
-  const { isSaved, day, name, description, uuid } = modalCalendarDay;
+  const { isSaved, day, name, description, workTime, uuid } = modalCalendarDay;
 
   const handelFieldChange = (element: any) => {
     setModalCalendarDay({
@@ -49,16 +49,26 @@ const ProjectModal = () => {
   const handleCreateSave = async () => {
     try {
       const response: any = await createDay(modalCalendarDay);
-      const newModalCalendarDay = {
-        ...modalCalendarDay,
-        ...response,
-        day: new Date(response.day),
-        owner: { uuid: response.owner.uuid },
-      };
 
-      setModalCalendarDay(newModalCalendarDay);
+      if (response.statusCode && response.statusCode > 299) {
+        console.log(
+          `[ProjectModal - handleCreateSave - 1]`,
+          response?.message.join("; ")
+        );
+        return setShowErrorModalAlert(true);
+      } else {
+        setModalCalendarDay({
+          ...modalCalendarDay,
+          ...response,
+          day: new Date(response.day),
+          owner: { uuid: response.owner.uuid },
+        });
+      }
     } catch (error: any) {
-      console.log(error?.message || JSON.stringify(error));
+      console.log(
+        `[ProjectModal - handleCreateSave - 2]`,
+        error?.message || JSON.stringify(error)
+      );
       return setShowErrorModalAlert(true);
     }
 
@@ -72,13 +82,24 @@ const ProjectModal = () => {
         modalCalendarDay
       );
 
-      setModalCalendarDay({
-        ...modalCalendarDay,
-        ...response,
-        day: new Date(response.day),
-      });
+      if (response.statusCode && response.statusCode > 299) {
+        console.log(
+          `[ProjectModal - handleEditSave - 1]`,
+          response?.message.join("; ")
+        );
+        return setShowErrorModalAlert(true);
+      } else {
+        setModalCalendarDay({
+          ...modalCalendarDay,
+          ...response,
+          day: new Date(response.day),
+        });
+      }
     } catch (error: any) {
-      console.log(error?.message || JSON.stringify(error));
+      console.log(
+        `[ProjectModal - handleEditSave - 2]`,
+        error?.message || JSON.stringify(error)
+      );
       return setShowErrorModalAlert(true);
     }
 
@@ -105,7 +126,7 @@ const ProjectModal = () => {
           margin="normal"
           label="Project name"
           defaultValue={isSaved ? name : null}
-          onChange={(elem) => handelFieldChange(elem)}
+          onChange={(element) => handelFieldChange(element)}
         />
         <TextField
           name="description"
@@ -113,7 +134,20 @@ const ProjectModal = () => {
           margin="normal"
           label="Work description"
           defaultValue={isSaved ? description : null}
-          onChange={(elem) => handelFieldChange(elem)}
+          onChange={(element) => handelFieldChange(element)}
+        />
+        <TextField
+          name="workTime"
+          fullWidth
+          margin="normal"
+          label="Work time"
+          type="number"
+          InputLabelProps={{
+            shrink: true,
+          }}
+          InputProps={{ inputProps: { inputMode: "numeric", min: 0, max: 24 } }}
+          defaultValue={isSaved ? workTime : null}
+          onChange={(element) => handelFieldChange(element)}
         />
         <Box m={0} pt={1}>
           <Grid
