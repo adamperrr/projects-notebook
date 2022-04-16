@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import monthNames from "./constants/MonthName.enum";
-import { getMonthDaysPromise } from "./promises";
+import { getMonthDaysPromise } from "./utils/promises";
 import { getMonthDates, parseYearAndMonth } from "../../utils/dateHelpers";
 import { emptyCalendarDay } from "./types/CalendarDay.type";
 import CalendarTable from "./components/CalendarTable";
@@ -13,9 +13,11 @@ import Footer from "./components/Footer";
 import Weekday from "./constants/Weekday.enum";
 import ProjectModal from "./components/ProjectModal";
 import useCalendar from "./contexts/CalendarContext";
+import useProjectModal from "./contexts/ProjectModalContext";
 
 const NotesPage = () => {
-  const { setCalendar, setCalendarLoaded, isModalOpen } = useCalendar();
+  const { setCalendar, setCalendarLoaded } = useCalendar();
+  const { isModalOpen } = useProjectModal();
 
   const [pageDate, setPageDate] = useState<Date>(new Date());
   const [pageTitle, setPageTitle] = useState<string>(

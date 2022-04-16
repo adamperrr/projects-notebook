@@ -10,8 +10,8 @@ import {
 } from "@mui/material";
 import CalendarDay from "../types/CalendarDay.type";
 import { getIsoDateString } from "../../../utils/dateHelpers";
-import { createDay, editDay } from "../promises";
-import useCalendar from "../contexts/CalendarContext";
+import { createDay, editDay } from "../utils/promises";
+import useProjectModal from "../contexts/ProjectModalContext";
 
 const ProjectModal = () => {
   const {
@@ -23,7 +23,7 @@ const ProjectModal = () => {
     setShowSuccessModalAlert,
     showErrorModalAlert,
     setShowErrorModalAlert,
-  } = useCalendar();
+  } = useProjectModal();
 
   const style = {
     position: "absolute" as "absolute",

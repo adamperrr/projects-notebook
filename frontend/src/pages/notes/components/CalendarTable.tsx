@@ -16,10 +16,11 @@ import CalendarDay from "../types/CalendarDay.type";
 import { getIsoDateString } from "../../../utils/dateHelpers";
 import Weekday from "../constants/Weekday.enum";
 import useCalendar from "../contexts/CalendarContext";
+import useProjectModal from "../contexts/ProjectModalContext";
 
 const CalendarTable = () => {
-  const { calendar, calendarLoaded, handleOpenModal, setModalCalendarDay } =
-    useCalendar();
+  const { calendar, calendarLoaded } = useCalendar();
+  const { handleOpenModal, setModalCalendarDay } = useProjectModal();
 
   return (
     <React.Fragment>
