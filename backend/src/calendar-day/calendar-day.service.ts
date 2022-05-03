@@ -1,7 +1,7 @@
 import { Injectable } from "@nestjs/common";
 import { InjectRepository } from "@nestjs/typeorm";
 import { Between, Repository } from "typeorm";
-import { User } from "../user/entities/user.entity";
+import { User } from "../users/entities/user.entity";
 import { CreateCalendarDayDto } from "./dto/create-calendar-day.dto";
 import { UpdateCalendarDayDto } from "./dto/update-calendar-day.dto";
 import { CalendarDay } from "./entities/calendar-day.entity";
