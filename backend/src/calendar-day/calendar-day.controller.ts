@@ -7,13 +7,16 @@ import {
   Param,
   Delete,
   Headers,
+  UseGuards,
 } from "@nestjs/common";
 import { CalendarDayService } from "./calendar-day.service";
 import { CreateCalendarDayDto } from "./dto/create-calendar-day.dto";
 import { UpdateCalendarDayDto } from "./dto/update-calendar-day.dto";
 import { v4 as uuid4 } from "uuid";
 import { CalendarDay } from "./entities/calendar-day.entity";
+import { JwtAuthGuard } from "src/auth/guards/jwt-auth.guard";
 
+@UseGuards(JwtAuthGuard)
 @Controller({
   path: "calendar-day",
   version: "1",
