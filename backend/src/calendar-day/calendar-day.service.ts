@@ -19,12 +19,9 @@ export class CalendarDayService {
   async createDay(
     createCalendarDayDto: CreateCalendarDayDto
   ): Promise<CalendarDay> {
-    // TODO: take user from auth
-    const calendarDayOwner = await this.usersRepository.findOneOrFail({
-      where: {
-        uuid: createCalendarDayDto.owner.uuid,
-      },
-    });
+    const calendarDayOwner = await this.usersRepository.findOneOrFail(
+      createCalendarDayDto.owner
+    );
 
     const calendarDayData = {
       day: createCalendarDayDto.day,
@@ -35,18 +32,17 @@ export class CalendarDayService {
     };
 
     const calendarDay = await this.calendarDayRepository.save(calendarDayData);
+    delete calendarDay.owner.password;
 
     return calendarDay;
   }
 
   async getCalendarDays(
     year: number,
-    monthNumber: number
+    monthNumber: number,
+    owner: Partial<User>
   ): Promise<CalendarDay[]> {
-    // TODO: take user from auth
-    const calendarDayOwner = await this.usersRepository.findOneOrFail({
-      where: { firstName: "Adam" },
-    });
+    const calendarDayOwner = await this.usersRepository.findOneOrFail(owner);
 
     const firstMothDay = new Date(year, monthNumber - 1, 1);
     const lastMothDay = new Date(year, monthNumber, 0);

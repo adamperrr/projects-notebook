@@ -8,6 +8,7 @@ import {
   Delete,
   Headers,
   UseGuards,
+  Req,
 } from "@nestjs/common";
 import { CalendarDayService } from "./calendar-day.service";
 import { CreateCalendarDayDto } from "./dto/create-calendar-day.dto";
@@ -15,6 +16,7 @@ import { UpdateCalendarDayDto } from "./dto/update-calendar-day.dto";
 import { v4 as uuid4 } from "uuid";
 import { CalendarDay } from "./entities/calendar-day.entity";
 import { JwtAuthGuard } from "src/auth/guards/jwt-auth.guard";
+import { User } from "src/users/entities/user.entity";
 
 @UseGuards(JwtAuthGuard)
 @Controller({
@@ -26,17 +28,21 @@ export class CalendarDayController {
 
   @Post()
   createDay(
+    @Req() req,
     @Body() createCalendarDayDto: CreateCalendarDayDto
   ): Promise<CalendarDay> {
+    createCalendarDayDto.owner = { uuid: req.user.uuid };
     return this.calendarDayService.createDay(createCalendarDayDto);
   }
 
   @Get(":year/:month")
   getCalendarDays(
+    @Req() req,
     @Param("year") year: number,
     @Param("month") month: number
   ): Promise<CalendarDay[]> {
-    return this.calendarDayService.getCalendarDays(+year, +month);
+    const owner: Partial<User> = { uuid: req.user.uuid };
+    return this.calendarDayService.getCalendarDays(+year, +month, owner);
   }
 
   @Get(":uuid")

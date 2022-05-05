@@ -16,7 +16,9 @@ import {
 } from "class-validator";
 import { CalendarDay } from "../../calendar-day/entities/calendar-day.entity";
 
-@Entity()
+@Entity({
+  name: "users",
+})
 export class User {
   @PrimaryGeneratedColumn("uuid")
   @IsNotEmpty()
@@ -27,6 +29,13 @@ export class User {
   @IsNotEmpty()
   @IsEmail()
   email: string;
+
+  @Column()
+  @IsNotEmpty()
+  @IsString()
+  @MinLength(8)
+  @MaxLength(100)
+  password: string;
 
   @Column()
   @IsNotEmpty()

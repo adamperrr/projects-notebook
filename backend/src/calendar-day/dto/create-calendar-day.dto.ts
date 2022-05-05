@@ -23,6 +23,5 @@ export class CreateCalendarDayDto {
   @Max(24)
   workTime: number;
 
-  @IsNotEmpty()
   owner: Partial<User>;
 }

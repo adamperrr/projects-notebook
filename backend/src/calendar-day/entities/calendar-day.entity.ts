@@ -8,7 +8,9 @@ import {
 } from "typeorm";
 import { User } from "../../users/entities/user.entity";
 
-@Entity()
+@Entity({
+  name: "calendar_days",
+})
 export class CalendarDay {
   @PrimaryGeneratedColumn("uuid")
   uuid: string;
